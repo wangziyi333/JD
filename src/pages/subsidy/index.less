@@ -1,0 +1,378 @@
+// ─────────────────────────────────────────────
+//  补贴专区  高保真样式
+//  设计基准宽度：375px
+// ─────────────────────────────────────────────
+
+.sz-page {
+  min-height: 100vh;
+  background: #f3f3f3;
+  box-sizing: border-box;
+}
+
+.sz-card {
+  background: #fff;
+  padding: 14px 12px 0;
+  box-sizing: border-box;
+}
+
+// ── 头部 ─────────────────────────────────────
+.sz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.sz-hd-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1;
+}
+
+.sz-hd-desc {
+  font-size: 14px;
+  font-weight: 400;
+  color: #e53535;
+  line-height: 1;
+}
+
+// ── 筛选栏 ───────────────────────────────────
+.sz-filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-top: 16px;
+}
+
+.sz-chip {
+  flex: 1;
+  height: 36px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+// 未选中 - 国家补贴
+.chip-national-off {
+  border: 1.5px solid #1cb260;
+  background: #f0faf4;
+  .sz-chip-label { color: #1cb260; font-weight: 500; }
+}
+
+// 未选中 - 其他
+.chip-outline {
+  border: 1px solid #f0b0b0;
+  background: #fff;
+  .sz-chip-label { color: #cc4444; font-weight: 400; }
+}
+
+// 选中 - 国家补贴
+.chip-green {
+  border: 1px solid #1cb260;
+  background: #1cb260;
+  .sz-chip-label { color: #fff; font-weight: 500; }
+}
+
+// 选中 - 其他
+.chip-red {
+  border: 1px solid #f44040;
+  background: #f44040;
+  .sz-chip-label { color: #fff; font-weight: 500; }
+}
+
+.sz-chip-label {
+  font-size: 14px;
+  line-height: 1;
+}
+
+// "可叠国补" 气泡
+.sz-chip-badge {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 16px;
+  line-height: 16px;
+  background: #ffc62e;
+  color: #6a4200;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 0 6px;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #ffc62e;
+  }
+}
+
+// ── 主体容器 ─────────────────────────────────
+.sz-body {
+  display: flex;
+  background: #fff;
+  min-height: 520px;
+}
+
+// ── 左侧品牌列 ──────────────────────────────
+// 始终保留 thin 宽度（布局不偏移），仅切换颜色可见性；无上下箭头
+.sz-brands {
+  width: 78px;
+  flex-shrink: 0;
+  height: 520px;
+  background: #fff;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  scrollbar-width: thin;                      // Firefox：始终占 thin 宽度
+  scrollbar-color: transparent transparent;   // Firefox：默认透明
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+    transition: background 0.25s;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+  }
+
+  &.is-scrolling {
+    scrollbar-color: #c8c8c8 transparent;
+    &::-webkit-scrollbar-thumb { background: #c8c8c8; }
+  }
+}
+
+.sz-brand-item {
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 3px;
+}
+
+.sz-brand-name {
+  font-size: 15px;
+  color: #999;
+  text-align: center;
+  line-height: 1.3;
+  padding: 0 4px;
+}
+
+.sz-brand-item.brand-active .sz-brand-name {
+  color: #e83333;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.sz-brand-line {
+  width: 18px;
+  height: 3px;
+  background: #e83333;
+  border-radius: 2px;
+}
+
+// ── 右侧商品列 ───────────────────────────────
+// 始终保留 thin 宽度（布局不偏移），仅切换颜色可见性；无上下箭头
+.sz-phones {
+  flex: 1;
+  height: 520px;
+  background: #fff;
+  padding: 8px 0 8px 8px;
+  box-sizing: border-box;
+  border-left: 1px solid #f2f2f2;
+  overflow-y: scroll;
+  scrollbar-width: thin;                      // Firefox：始终占 thin 宽度
+  scrollbar-color: transparent transparent;   // Firefox：默认透明
+
+  &::-webkit-scrollbar {
+    width: 3px;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+    transition: background 0.25s;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+  }
+
+  &.is-scrolling {
+    scrollbar-color: #c8c8c8 transparent;
+    &::-webkit-scrollbar-thumb { background: #c8c8c8; }
+  }
+}
+
+// ── 商品卡片 ─────────────────────────────────
+.sz-phone-card {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  height: 138px;
+  margin-bottom: 10px;
+  padding-right: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f5f5f5;
+  box-sizing: border-box;
+}
+
+.sz-phone-card:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.sz-phone-img {
+  width: 118px;
+  height: 118px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: #f0f0f0;
+  display: block;
+}
+
+.sz-phone-body {
+  flex: 1;
+  min-width: 0;
+  height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+// 标题行
+.sz-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.sz-self-tag {
+  flex-shrink: 0;
+  background: #f44040;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 5px;
+  border-radius: 3px;
+  line-height: 14px;
+  margin-top: 1px;
+}
+
+.sz-phone-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+// 标签行
+.sz-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+.sz-tag {
+  font-size: 12px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.sz-tag.tag-green {
+  color: #1aaa55;
+  border: 1px solid #a5ddb8;
+  background: #ecf9f2;
+}
+
+.sz-tag.tag-red {
+  color: #d44040;
+  border: 1px solid #f0b8b8;
+  background: #fff4f4;
+}
+
+// ── 价格行 ───────────────────────────────────
+.sz-price-bar {
+  display: flex;
+  align-items: center;
+  background: #fff0f2;
+  border-radius: 8px;
+  height: 40px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.sz-price {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  padding-left: 10px;
+  padding-bottom: 3px;
+}
+
+.sz-yen {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e83333;
+  line-height: 1;
+}
+
+.sz-price-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: #e83333;
+  line-height: 1;
+}
+
+// ── "抢"按钮（无箭头，纯圆角红色矩形）──────
+.sz-buy-btn {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: linear-gradient(180deg, #ff5544 0%, #cc1111 100%);
+  border-radius: 8px;
+  margin-right: 4px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(160, 0, 0, 0.35));
+}
+
+.sz-buy-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
