@@ -13,7 +13,8 @@ const FILTER_META: Record<string, { label: string; badge: string | null }> = {
 
 const FILTER_ORDER: string[] = ['national', 'contract', 'tradeIn', 'billion']
 
-// 每种筛选组合对应不同数量的品牌列表，体现"个数不一致"
+// 单筛选项 → 对应品牌列表（各项数量不同，体现"个数不一致"）
+// 多筛选组合的品牌列表由运行时对各单项取交集动态计算，无需写死
 const PRESET_BRANDS: Record<string, string[]> = {
   // 国家补贴：全部 16 个品牌
   national:
@@ -25,15 +26,9 @@ const PRESET_BRANDS: Record<string, string[]> = {
   // 以旧换新：9 个
   tradeIn:
     ['Apple', 'vivo', '一加', '小米', 'OPPO', '荣耀', '华为', '努比亚', '其他'],
-  // 百亿补贴：7 个
+  // 百亿补贴：7 个（互斥，永远单选）
   billion:
     ['Apple', '小米', 'OPPO', '荣耀', '华为', '魅族', '其他'],
-  // 国补 + 合约：10 个
-  'contract+national':
-    ['Apple', 'vivo', '三星', '一加', '小米', 'OPPO', '荣耀', '华为', '传音', '其他'],
-  // 国补 + 换新：8 个
-  'national+tradeIn':
-    ['Apple', 'vivo', '一加', '小米', 'OPPO', '荣耀', '华为', '其他'],
 }
 
 const ITEM_HEIGHT = 148
@@ -65,9 +60,14 @@ function SubsidyPage() {
   }, [listKey])
 
   // ── 品牌列表 ──
+  // 单筛选：直接查表；多筛选：各单项列表取交集，按 BRAND_ORDER 排序
   const allowedBrands = useMemo(() => {
-    const key = [...selectedFilters].sort().join('+')
-    return PRESET_BRANDS[key] ?? BRAND_ORDER.slice()
+    if (selectedFilters.length === 0) return BRAND_ORDER.slice()
+    if (selectedFilters.length === 1) {
+      return PRESET_BRANDS[selectedFilters[0]] ?? BRAND_ORDER.slice()
+    }
+    const sets = selectedFilters.map(f => new Set(PRESET_BRANDS[f] ?? BRAND_ORDER))
+    return BRAND_ORDER.filter(brand => sets.every(s => s.has(brand)))
   }, [selectedFilters])
 
   const activeBrand = useMemo(

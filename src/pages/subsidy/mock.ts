@@ -56,9 +56,9 @@ const brandAliasMap: Record<string, string[]> = {
 }
 
 export function extractBrandFromTitle(title: string): string {
-  const s = title.toLowerCase()
+  const lower = title.toLowerCase()
   for (const [brand, aliases] of Object.entries(brandAliasMap)) {
-    if (aliases.some(a => s.includes(a.toLowerCase()))) return brand
+    if (aliases.some(a => lower.includes(a.toLowerCase()))) return brand
   }
   return '其他'
 }
