@@ -1,0 +1,4 @@
+import '../../Price/style'
+import '../../Tag/style'
+
+import '../../../packages/card/card.scss'
